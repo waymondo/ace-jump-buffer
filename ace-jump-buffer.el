@@ -24,6 +24,9 @@
 (defvar ajb-initial-bs-attributes-list bs-attributes-list)
 (defvar ajb-initial-bs-configuration bs-current-configuration)
 
+;; cache current ace jump mode scope
+(defvar ajb-initial-ace-jump-mode-scope ace-jump-mode-scope)
+
 ;; when `perspective' mode is found and loaded, add a `bs-configuration' for it
 (when (require 'perspective nil 'noerror)
   (add-to-list 'bs-configurations
