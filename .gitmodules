@@ -1,0 +1,6 @@
+[submodule "ace-jump-mode"]
+	path = ace-jump-mode
+	url = https://github.com/winterTTr/ace-jump-mode
+[submodule "perspective"]
+	path = perspective
+	url = https://github.com/nex3/perspective-el
