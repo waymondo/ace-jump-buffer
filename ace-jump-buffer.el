@@ -1,4 +1,4 @@
-;;; ace-jump-buffer.el -- fast buffer switching with `ace-jump-mode' and `bs'
+;;; ace-jump-buffer.el -- fast buffer switching extension to `ace-jump-mode'
 ;;
 ;; Copyright 2013 Justin Talbott
 ;;
