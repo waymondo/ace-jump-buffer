@@ -1,10 +1,11 @@
-;;; ace-jump-buffer.el -- fast buffer switching extension to `ace-jump-mode'
+;;; ace-jump-buffer.el --- fast buffer switching extension to `ace-jump-mode'
 ;;
 ;; Copyright 2013 Justin Talbott
 ;;
 ;; Author: Justin Talbott <justin@waymondo.com>
 ;; URL: https://github.com/waymondo/ace-jump-buffer
 ;; Version: 0.1
+;; Package-Requires: ((ace-jump-mode "1.0"))
 ;;
 ;;
 ;; Installation:
@@ -101,6 +102,7 @@
            (original-func (key-binding (kbd "C-g"))))
       (call-interactively original-func))))
 
+;;;###autoload
 (define-minor-mode ace-jump-buffer-mode
   "Use `ace-jump-mode` to quickly toggle between buffer"
   :init-value nil
@@ -109,3 +111,4 @@
   :global t)
 
 (provide 'ace-jump-buffer)
+;;; ace-jump-buffer.el ends here
