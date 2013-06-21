@@ -4,15 +4,13 @@
 ;;
 ;; Author: Justin Talbott <justin@waymondo.com>
 ;; URL: https://github.com/waymondo/ace-jump-buffer
-;; Version: 0.1
+;; Version: 0.1.1
 ;; Package-Requires: ((ace-jump-mode "1.0"))
 ;;
 ;;
 ;; Installation:
 ;;
 ;;   (require 'ace-jump-buffer)
-;;   (ace-jump-buffer-mode t)
-;;
 ;;   then bind `ace-jump-buffer' to something useful
 ;;
 
@@ -68,47 +66,33 @@
 
 (defun ace-jump-buffer-hook ()
   "On the end of ace jump, select the buffer at the current line."
-  (when (and ace-jump-buffer-mode
-             (string-match (buffer-name) "*buffer-selection*"))
+  (when (string-match (buffer-name) "*buffer-selection*")
     (bs-select)
     (ace-jump-buffer-turn-off)))
 
+;;;###autoload
 (defun ace-jump-buffer ()
+  "Quickly hop between buffers with `ace-jump-mode'"
   (interactive)
-  (when ace-jump-buffer-mode
-    (ace-jump-buffer-turn-on)
-    (bs--show-with-configuration ajb-bs-configuration)
-    (beginning-of-buffer)
-    (set (make-local-variable 'ace-jump-mode-scope) 'window)
-    (call-interactively 'ace-jump-line-mode)
-    (define-key overriding-local-map (kbd "C-g") 'ace-jump-buffer-exit)
-    (define-key overriding-local-map [t] 'ace-jump-buffer-done)))
-
-(defun ace-jump-buffer-done ()
-  (interactive)
-  (when ace-jump-current-mode
-    (ace-jump-done))
-  (ace-jump-buffer-turn-off))
+  (ace-jump-buffer-turn-on)
+  (bs--show-with-configuration ajb-bs-configuration)
+  (beginning-of-buffer)
+  (set (make-local-variable 'ace-jump-mode-scope) 'window)
+  (call-interactively 'ace-jump-line-mode)
+  (define-key overriding-local-map (kbd "C-g") 'ace-jump-buffer-exit)
+  (define-key overriding-local-map [t] 'ace-jump-buffer-exit))
 
 (defun ace-jump-buffer-exit ()
   (interactive)
-  (if (and ace-jump-buffer-mode
-           (string-match (buffer-name) "*buffer-selection*"))
+  (if (string-match (buffer-name) "*buffer-selection*")
       (progn
-        (ace-jump-buffer-done)
+        (when ace-jump-current-mode (ace-jump-done))
+        (ace-jump-buffer-turn-off)
         (bs-kill)
         (kill-buffer "*buffer-selection*"))
     (let* ((ace-jump-mode nil)
            (original-func (key-binding (kbd "C-g"))))
       (call-interactively original-func))))
-
-;;;###autoload
-(define-minor-mode ace-jump-buffer-mode
-  "Use `ace-jump-mode` to quickly toggle between buffer"
-  :init-value nil
-  :lighter ""
-  :group 'ace-jump-buffer
-  :global t)
 
 (provide 'ace-jump-buffer)
 ;;; ace-jump-buffer.el ends here
