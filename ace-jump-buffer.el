@@ -25,6 +25,7 @@
 
 ;; cache current ace jump mode scope
 (defvar ajb-initial-ace-jump-mode-scope ace-jump-mode-scope)
+(defvar ajb-initial-ace-jump-mode-gray-background ace-jump-mode-gray-background)
 
 ;; when `perspective' mode is found and loaded, add a `bs-configuration' for it
 (when (require 'perspective nil 'noerror)
@@ -52,6 +53,7 @@
   (add-hook 'ace-jump-mode-end-hook 'ace-jump-buffer-hook)
   (ad-activate 'bs--show-header)
   (setq ace-jump-mode-scope 'window)
+  (setq ace-jump-mode-gray-background nil)
   (setq bs-header-lines-length ajb-bs-header-lines-length)
   (setq bs-max-window-height ajb-bs-max-window-height)
   (setq bs-attributes-list ajb-bs-attributes-list))
@@ -60,6 +62,7 @@
   (remove-hook 'ace-jump-mode-end-hook 'ace-jump-buffer-hook)
   (ad-deactivate 'bs--show-header)
   (setq ace-jump-mode-scope ajb-initial-ace-jump-mode-scope)
+  (setq ace-jump-mode-gray-background ajb-initial-ace-jump-mode-gray-background)
   (setq bs-header-lines-length ajb-initial-bs-header-lines-length)
   (setq bs-max-window-height ajb-initial-bs-max-window-height)
   (setq bs-attributes-list ajb-initial-bs-attributes-list))
