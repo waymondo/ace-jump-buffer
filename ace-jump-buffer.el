@@ -35,7 +35,10 @@
                    (with-current-buffer buf
                      (not (member buf (persp-buffers persp-curr)))))) nil))
 
-(defvar ajb-bs-configuration (if (require 'perspective nil 'noerror) "persp" "all"))
+(defvar ajb-bs-configuration
+  (if (and (require 'perspective nil 'noerror) (not (eq persp-mode nil)))
+      "persp"
+    "all"))
 
 ;; settings for a barebones `bs' switcher
 (defvar ajb-bs-header-lines-length 0)
