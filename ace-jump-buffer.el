@@ -55,6 +55,7 @@
                                        ("Buffer" bs--get-name-length 10 left bs--get-name))))
 
 (defadvice bs--show-header (around maybe-disable-bs-header)
+(defvar ajb-bs-configuration "all")
   "Don't show the `bs' header when doing `ace-jump-buffer'"
   (if nil ad-do-it))
 
@@ -63,7 +64,7 @@
   (ad-activate 'bs--show-header)
   (setq ace-jump-mode-scope 'window)
   (setq ace-jump-mode-gray-background nil)
-  (setq bs-buffer-sort-function bs-sort-buffers-by-recentf)
+  (setq bs-buffer-sort-function 'bs-sort-buffers-by-recentf)
   (setq bs-header-lines-length ajb-bs-header-lines-length)
   (setq bs-max-window-height ajb-bs-max-window-height)
   (setq bs-attributes-list ajb-bs-attributes-list))
