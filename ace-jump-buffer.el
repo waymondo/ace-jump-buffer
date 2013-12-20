@@ -4,7 +4,7 @@
 ;;
 ;; Author: Justin Talbott <justin@waymondo.com>
 ;; URL: https://github.com/waymondo/ace-jump-buffer
-;; Version: 0.1.1
+;; Version: 0.1.2
 ;; Package-Requires: ((ace-jump-mode "1.0") (dash "2.4.0"))
 ;;
 ;;
