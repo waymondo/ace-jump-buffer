@@ -5,7 +5,7 @@
 ;; Author: Justin Talbott <justin@waymondo.com>
 ;; URL: https://github.com/waymondo/ace-jump-buffer
 ;; Version: 0.1.1
-;; Package-Requires: ((ace-jump-mode "1.0"))
+;; Package-Requires: ((ace-jump-mode "1.0") (dash "2.4.0"))
 ;;
 ;;
 ;; Installation:
@@ -16,12 +16,15 @@
 
 (require 'bs)
 (require 'ace-jump-mode)
+(require 'recentf)
+(require 'dash)
 
 ;; cache any initial `bs' settings
 (defvar ajb-initial-bs-header-lines-length bs-header-lines-length)
 (defvar ajb-initial-bs-max-window-height bs-max-window-height)
 (defvar ajb-initial-bs-attributes-list bs-attributes-list)
 (defvar ajb-initial-bs-configuration bs-current-configuration)
+(defvar ajb-initial-bs-buffer-sort-function bs-buffer-sort-function)
 
 ;; cache current ace jump mode scope
 (defvar ajb-initial-ace-jump-mode-scope ace-jump-mode-scope)
@@ -36,6 +39,12 @@
 
   (add-to-list 'bs-configurations
                '("persp" nil nil nil ajb-buffer-in-persp-curr nil)))
+
+(defun bs-sort-buffers-by-recentf (b1 b2)
+  "Function for sorting buffers by recentf order."
+  (let ((b1-index (-elem-index (buffer-file-name b1) recentf-list))
+        (b2-index (-elem-index (buffer-file-name b2) recentf-list)))
+    (when (< b1-index b2-index) t)))
 
 ;; settings for a barebones `bs' switcher
 (defvar ajb-bs-header-lines-length 0)
@@ -54,6 +63,7 @@
   (ad-activate 'bs--show-header)
   (setq ace-jump-mode-scope 'window)
   (setq ace-jump-mode-gray-background nil)
+  (setq bs-buffer-sort-function bs-sort-buffers-by-recentf)
   (setq bs-header-lines-length ajb-bs-header-lines-length)
   (setq bs-max-window-height ajb-bs-max-window-height)
   (setq bs-attributes-list ajb-bs-attributes-list))
@@ -63,6 +73,7 @@
   (ad-deactivate 'bs--show-header)
   (setq ace-jump-mode-scope ajb-initial-ace-jump-mode-scope)
   (setq ace-jump-mode-gray-background ajb-initial-ace-jump-mode-gray-background)
+  (setq bs-buffer-sort-function ajb-initial-bs-buffer-sort-function)
   (setq bs-header-lines-length ajb-initial-bs-header-lines-length)
   (setq bs-max-window-height ajb-initial-bs-max-window-height)
   (setq bs-attributes-list ajb-initial-bs-attributes-list))
