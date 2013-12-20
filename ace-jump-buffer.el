@@ -29,16 +29,13 @@
 
 ;; when `perspective' mode is found and loaded, add a `bs-configuration' for it
 (when (require 'perspective nil 'noerror)
-  (add-to-list 'bs-configurations
-               '("persp" nil nil nil
-                 (lambda (buf)
-                   (with-current-buffer buf
-                     (not (member buf (persp-buffers persp-curr)))))) nil))
 
-(defvar ajb-bs-configuration
-  (if (and (require 'perspective nil 'noerror) (not (eq persp-mode nil)))
-      "persp"
-    "all"))
+  (defun ajb-buffer-in-persp-curr (buffer)
+    (with-current-buffer buffer
+      (not (member buffer (persp-buffers persp-curr)))))
+
+  (add-to-list 'bs-configurations
+               '("persp" nil nil nil ajb-buffer-in-persp-curr nil)))
 
 ;; settings for a barebones `bs' switcher
 (defvar ajb-bs-header-lines-length 0)
