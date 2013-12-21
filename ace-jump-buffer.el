@@ -47,6 +47,7 @@
     (when (< b1-index b2-index) t)))
 
 ;; settings for a barebones `bs' switcher
+(defvar ajb-bs-configuration "all")
 (defvar ajb-bs-header-lines-length 0)
 (defvar ajb-bs-max-window-height 27)
 (defvar ajb-bs-attributes-list (quote (("" 2 2 left " ")
@@ -55,7 +56,6 @@
                                        ("Buffer" bs--get-name-length 10 left bs--get-name))))
 
 (defadvice bs--show-header (around maybe-disable-bs-header)
-(defvar ajb-bs-configuration "all")
   "Don't show the `bs' header when doing `ace-jump-buffer'"
   (if nil ad-do-it))
 
