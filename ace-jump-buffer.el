@@ -19,17 +19,6 @@
 (require 'recentf)
 (require 'dash)
 
-;; cache any initial `bs' settings
-(defvar ajb-initial-bs-header-lines-length bs-header-lines-length)
-(defvar ajb-initial-bs-max-window-height bs-max-window-height)
-(defvar ajb-initial-bs-attributes-list bs-attributes-list)
-(defvar ajb-initial-bs-configuration bs-current-configuration)
-(defvar ajb-initial-bs-buffer-sort-function bs-buffer-sort-function)
-
-;; cache current ace jump mode scope
-(defvar ajb-initial-ace-jump-mode-scope ace-jump-mode-scope)
-(defvar ajb-initial-ace-jump-mode-gray-background ace-jump-mode-gray-background)
-
 ;; when `perspective' mode is found and loaded, add a `bs-configuration' for it
 (when (require 'perspective nil 'noerror)
 
@@ -47,63 +36,46 @@
     (when (< b1-index b2-index) t)))
 
 ;; settings for a barebones `bs' switcher
-(defvar ajb-bs-configuration "all")
-(defvar ajb-bs-header-lines-length 0)
-(defvar ajb-bs-max-window-height 27)
-(defvar ajb-bs-attributes-list (quote (("" 2 2 left " ")
-                                       ("" 1 1 left bs--get-marked-string)
-                                       ("" 1 1 left " ")
-                                       ("Buffer" bs--get-name-length 10 left bs--get-name))))
+(defvar ajb--showing nil)
+(defvar ajb--bs-attributes-list '(("" 2 2 left " ")
+                                  ("" 1 1 left bs--get-marked-string)
+                                  ("" 1 1 left " ")
+                                  ("Buffer" bs--get-name-length 10 left bs--get-name)))
 
-(defadvice bs--show-header (around maybe-disable-bs-header)
+(defadvice bs--show-header (around maybe-disable-bs-header activate)
   "Don't show the `bs' header when doing `ace-jump-buffer'"
-  (if nil ad-do-it))
-
-(defun ace-jump-buffer-turn-on ()
-  (add-hook 'ace-jump-mode-end-hook 'ace-jump-buffer-hook)
-  (ad-activate 'bs--show-header)
-  (setq ace-jump-mode-scope 'window)
-  (setq ace-jump-mode-gray-background nil)
-  (setq bs-buffer-sort-function 'bs-sort-buffers-by-recentf)
-  (setq bs-header-lines-length ajb-bs-header-lines-length)
-  (setq bs-max-window-height ajb-bs-max-window-height)
-  (setq bs-attributes-list ajb-bs-attributes-list))
-
-(defun ace-jump-buffer-turn-off ()
-  (remove-hook 'ace-jump-mode-end-hook 'ace-jump-buffer-hook)
-  (ad-deactivate 'bs--show-header)
-  (setq ace-jump-mode-scope ajb-initial-ace-jump-mode-scope)
-  (setq ace-jump-mode-gray-background ajb-initial-ace-jump-mode-gray-background)
-  (setq bs-buffer-sort-function ajb-initial-bs-buffer-sort-function)
-  (setq bs-header-lines-length ajb-initial-bs-header-lines-length)
-  (setq bs-max-window-height ajb-initial-bs-max-window-height)
-  (setq bs-attributes-list ajb-initial-bs-attributes-list))
+  (unless ajb--showing ad-do-it))
 
 (defun ace-jump-buffer-hook ()
   "On the end of ace jump, select the buffer at the current line."
   (when (string-match (buffer-name) "*buffer-selection*")
-    (bs-select)
-    (ace-jump-buffer-turn-off)))
+    (bs-select)))
+
+(add-hook 'ace-jump-mode-end-hook 'ace-jump-buffer-hook)
 
 ;;;###autoload
 (defun ace-jump-buffer ()
   "Quickly hop between buffers with `ace-jump-mode'"
   (interactive)
-  (ace-jump-buffer-turn-on)
-  (bs--show-with-configuration ajb-bs-configuration)
-  (push-mark)
-  (goto-char (point-min))
-  (set (make-local-variable 'ace-jump-mode-scope) 'window)
-  (call-interactively 'ace-jump-line-mode)
-  (define-key overriding-local-map (kbd "C-g") 'ace-jump-buffer-exit)
-  (define-key overriding-local-map [t] 'ace-jump-buffer-exit))
+  (let ((ace-jump-mode-gray-background nil)
+        (ace-jump-mode-scope 'window)
+        (bs-buffer-sort-function 'bs-sort-buffers-by-recentf)
+        (bs-max-window-height 27)
+        (bs-attributes-list ajb--bs-attributes-list)
+        (ajb--showing t))
+    (bs--show-with-configuration "all")
+    (set (make-local-variable 'bs-header-lines-length) 0)
+    (push-mark)
+    (goto-char (point-min))
+    (call-interactively 'ace-jump-line-mode)
+    (define-key overriding-local-map (kbd "C-g") 'ace-jump-buffer-exit)
+    (define-key overriding-local-map [t] 'ace-jump-buffer-exit)))
 
 (defun ace-jump-buffer-exit ()
   (interactive)
   (if (string-match (buffer-name) "*buffer-selection*")
       (progn
         (when ace-jump-current-mode (ace-jump-done))
-        (ace-jump-buffer-turn-off)
         (bs-kill)
         (kill-buffer "*buffer-selection*"))
     (let* ((ace-jump-mode nil)
