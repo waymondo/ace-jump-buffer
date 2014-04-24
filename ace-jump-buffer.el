@@ -35,6 +35,17 @@
         (b2-index (-elem-index (buffer-file-name b2) recentf-list)))
     (when (< b1-index b2-index) t)))
 
+(defgroup ace-jump-buffer nil
+  "fast buffer switching extension to `ace-jump-mode'"
+  :version "0.1.2"
+  :link '(url-link "https://github.com/waymondo/ace-jump-buffer")
+  :group 'convenience)
+
+(defcustom ajb-max-window-height 27
+  "Maximal window height of Ace Jump Buffer Selection Menu."
+  :group 'ace-jump-buffer
+  :type 'integer)
+
 ;; settings for a barebones `bs' switcher
 (defvar ajb--showing nil)
 (defvar ajb--bs-attributes-list '(("" 2 2 left " ")
@@ -60,13 +71,14 @@
   (let ((ace-jump-mode-gray-background nil)
         (ace-jump-mode-scope 'window)
         (bs-buffer-sort-function 'bs-sort-buffers-by-recentf)
-        (bs-max-window-height 27)
         (bs-attributes-list ajb--bs-attributes-list)
         (ajb--showing t))
     (bs--show-with-configuration "all")
     (set (make-local-variable 'bs-header-lines-length) 0)
+    (set (make-local-variable 'bs-max-window-height) ajb-max-window-height)
     (push-mark)
     (goto-char (point-min))
+    (bs--set-window-height)
     (call-interactively 'ace-jump-line-mode)
     (define-key overriding-local-map (kbd "C-g") 'ace-jump-buffer-exit)
     (define-key overriding-local-map [t] 'ace-jump-buffer-exit)))
