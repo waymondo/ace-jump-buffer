@@ -53,6 +53,7 @@
                                   ("" 1 1 left " ")
                                   ("Buffer" bs--get-name-length 10 left bs--get-name)))
 
+
 (defadvice bs--show-header (around maybe-disable-bs-header activate)
   "Don't show the `bs' header when doing `ace-jump-buffer'"
   (unless ajb--showing ad-do-it))
@@ -60,9 +61,13 @@
 (defun ace-jump-buffer-hook ()
   "On the end of ace jump, select the buffer at the current line."
   (when (string-match (buffer-name) "*buffer-selection*")
-    (bs-select)))
+    (bs-select)
+    (ace-jump-buffer-reset)))
 
 (add-hook 'ace-jump-mode-end-hook 'ace-jump-buffer-hook)
+
+(defun ace-jump-buffer-reset ()
+  (kill-buffer "*buffer-selection*"))
 
 ;;;###autoload
 (defun ace-jump-buffer ()
@@ -89,7 +94,7 @@
       (progn
         (when ace-jump-current-mode (ace-jump-done))
         (bs-kill)
-        (kill-buffer "*buffer-selection*"))
+        (ace-jump-buffer-reset))
     (let* ((ace-jump-mode nil)
            (original-func (key-binding (kbd "C-g"))))
       (call-interactively original-func))))
