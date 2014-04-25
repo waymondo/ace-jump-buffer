@@ -4,7 +4,7 @@
 ;;
 ;; Author: Justin Talbott <justin@waymondo.com>
 ;; URL: https://github.com/waymondo/ace-jump-buffer
-;; Version: 0.1.2
+;; Version: 0.2.0
 ;; Package-Requires: ((ace-jump-mode "1.0") (dash "2.4.0"))
 ;;
 ;;
@@ -37,7 +37,7 @@
 
 (defgroup ace-jump-buffer nil
   "fast buffer switching extension to `ace-jump-mode'"
-  :version "0.1.2"
+  :version "0.2.0"
   :link '(url-link "https://github.com/waymondo/ace-jump-buffer")
   :group 'convenience)
 

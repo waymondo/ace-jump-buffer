@@ -1,13 +1,20 @@
-## Ace Jump Buffer
+### Ace Jump Buffer
 
-`ace-jump-buffer` is an extension for [`ace-jump-mode`](https://github.com/winterTTr/ace-jump-mode) and the native `bs` buffer menu that lets you hop to any of your current Emacs buffers in two key strokes: one to display the buffer menu, and one to select the line on which the buffer is on.
-
-It also supports [`perspective`](https://github.com/nex3/perspective-el) to scope the buffer list to your current workspace/project.
+`ace-jump-buffer` is an extension for [`ace-jump-mode`](https://github.com/winterTTr/ace-jump-mode) and the native `bs` buffer menu that lets you hop to Emacs buffers in two key strokes.
 
 ### Installation
 
-My recommendation for Emacs 24+ is to simply add [MELPA](melpa.milkbox.net) to your package archives list and run `package-install ace-jump-buffer`. Or to install manually, make sure `ace-jump-buffer.el`, `ace-jump-mode.el`, (and optionally, `perspective.el`) are in your load path. 
+Install from [MELPA](melpa.milkbox.net) with `package-install ace-jump-buffer`, or drop `ace-jump-buffer.el` and `ace-jump-mode.el` into your load path. 
 
-Then simply `(require 'ace-jump-buffer)` bind the command `ace-jump-buffer` to a key binding of your choice and flip away.
+### Available commands
 
+`(ace-jump-buffer)` - Open the buffer menu and go to the selected buffer in the current window.
+`(ace-jump-buffer-other-window)` - Open the buffer menu and go to the selected buffer in the other window.
+`(ace-jump-buffer-in-one-window)` - Open the buffer menu and go to the selected buffer in full window.
+
+### Variables
+
+`ajb-max-window-height` - The max window height for the buffer menu. The default is 27 (fits the lowercase alphabet).
+`ajb-sort-function` - The function for sorting buffers in the menu. The default is `(bs-sort-buffers-by-recentf)`.
+`ajb-bs-configuration` - The `bs` configuration to use when displaying the menu. The default is `"all"`. If you use [`perspective`](https://github.com/nex3/perspective-el), you can set this to `"persp"` to scope the buffer list to your current workspace/project.
 
