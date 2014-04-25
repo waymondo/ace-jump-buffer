@@ -46,10 +46,20 @@
   :group 'ace-jump-buffer
   :type 'integer)
 
-;; settings for a barebones `bs' switcher
+(defcustom ajb-sort-function 'bs-sort-buffers-by-recentf
+  "The `bs-sort-function' function used when displaying `ace-jump-buffer'"
+  :group 'ace-jump-buffer)
+
+(defcustom ajb-bs-configuration "all"
+  "The `bs-configuration' used when displaying `ace-jump-buffer'"
+  :group 'ace-jump-buffer)
+
+;; interval settings
 (defvar ajb--showing nil)
 (defvar ajb--other-window nil)
 (defvar ajb--in-one-window nil)
+
+;; settings for a barebones `bs' switcher
 (defvar ajb--bs-attributes-list '(("" 2 2 left " ")
                                   ("" 1 1 left bs--get-marked-string)
                                   ("" 1 1 left " ")
@@ -81,10 +91,10 @@
   (interactive)
   (let ((ace-jump-mode-gray-background nil)
         (ace-jump-mode-scope 'window)
-        (bs-buffer-sort-function 'bs-sort-buffers-by-recentf)
+        (bs-buffer-sort-function ajb-sort-function)
         (bs-attributes-list ajb--bs-attributes-list)
         (ajb--showing t))
-    (bs--show-with-configuration "all")
+    (bs--show-with-configuration ajb-bs-configuration)
     (set (make-local-variable 'bs-header-lines-length) 0)
     (set (make-local-variable 'bs-max-window-height) ajb-max-window-height)
     (push-mark)
