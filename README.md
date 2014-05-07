@@ -20,5 +20,4 @@ Install from [MELPA](melpa.milkbox.net) with `package-install ace-jump-buffer`, 
 
 `ajb-sort-function` - The function for sorting buffers in the menu. The default is `(bs-sort-buffers-by-recentf)`.
 
-`ajb-bs-configuration` - The `bs` configuration to use when displaying the menu. The default is `"all"`. If you use [`perspective`](https://github.com/nex3/perspective-el), you can set this to `"persp"` to scope the buffer list to your current workspace/project.
-
+`ajb-bs-configuration` - The `bs` configuration to use when displaying the menu. The default is `"all"`. If you use [`perspective`](https://github.com/nex3/perspective-el), you can set this to `"persp"` to scope the buffer list to your current workspace/project. Alternatively, if you use [`projectile`](https://github.com/bbatsov/projectile), you can set this to `"projectile"` to scope the buffer list to your current project.
