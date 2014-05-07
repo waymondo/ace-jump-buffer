@@ -29,6 +29,14 @@
   (add-to-list 'bs-configurations
                '("persp" nil nil nil ajb-buffer-in-persp-curr nil)))
 
+(when (require 'projectile nil 'noerror)
+  (defun ajb-buffer-in-projectile-curr (buffer)
+    (let ((project-root (projectile-project-root)))
+        (with-current-buffer buffer
+          (not (projectile-project-buffer-p buffer project-root)))))
+  (add-to-list 'bs-configurations
+               '("projectile" nil nil nil ajb-buffer-in-projectile-curr nil)))
+
 (defun bs-sort-buffers-by-recentf (b1 b2)
   "Function for sorting buffers by recentf order."
   (let ((b1-index (-elem-index (buffer-file-name b1) recentf-list))
