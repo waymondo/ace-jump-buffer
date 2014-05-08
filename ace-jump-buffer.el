@@ -4,7 +4,7 @@
 ;;
 ;; Author: Justin Talbott <justin@waymondo.com>
 ;; URL: https://github.com/waymondo/ace-jump-buffer
-;; Version: 0.2.0
+;; Version: 0.2.2
 ;; Package-Requires: ((ace-jump-mode "1.0") (dash "2.4.0"))
 ;;
 ;;
@@ -62,6 +62,11 @@
   "The `bs-configuration' used when displaying `ace-jump-buffer'"
   :group 'ace-jump-buffer)
 
+(defcustom ajb-reuse-windows nil
+  "If you call `ace-jump-buffer-other-window' with this set to non-nil,
+it will display the selected buffer in an existing other window if available."
+  :group 'ace-jump-buffer)
+
 ;; interval settings
 (defvar ajb--showing nil)
 (defvar ajb--other-window nil)
@@ -117,7 +122,10 @@
   "Quickly hop to buffer with `ace-jump-mode' in other window."
   (interactive)
   (setq ajb--other-window t)
-  (ace-jump-buffer))
+  (if ajb-reuse-windows
+      (let ((pop-to-buffer (window-buffer (next-window))))
+        (ace-jump-buffer))
+    (ace-jump-buffer)))
 
 ;;;###autoload
 (defun ace-jump-buffer-in-one-window ()
