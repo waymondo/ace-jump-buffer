@@ -54,6 +54,10 @@
   :group 'ace-jump-buffer
   :type 'integer)
 
+(defcustom ajb-press-enter-for-last-buffer nil
+  "When true pressing enter will go to the last file for the current pane"
+  :group 'ace-jump-buffer)
+
 (defcustom ajb-sort-function 'bs-sort-buffers-by-recentf
   "The `bs-sort-function' function used when displaying `ace-jump-buffer'"
   :group 'ace-jump-buffer)
@@ -110,6 +114,9 @@
     (bs--set-window-height)
     (call-interactively 'ace-jump-line-mode)
     (define-key overriding-local-map (kbd "C-g") 'ace-jump-buffer-exit)
+    (when ajb-press-enter-for-last-buffer
+        (define-key overriding-local-map (kbd "<return>") '(lambda()(interactive)(ace-jump-buffer-exit) (switch-to-buffer (other-buffer (current-buffer) 1)))))
+
     (define-key overriding-local-map [t] 'ace-jump-buffer-exit)))
 
 ;;;###autoload
