@@ -19,29 +19,32 @@
 (require 'recentf)
 (require 'dash)
 
-;; when `perspective' mode is found and loaded, add a `bs-configuration' for it
+(defmacro make-ace-jump-buffer-function (name &rest buffer-list-filter)
+  (declare (indent 1))
+  (let ((filter-defun-name (intern (format "ajb/filter-%s-buffers" name)))
+        (defun-name (intern (format "ace-jump-%s-buffers" name))))
+    `(progn
+       (defun ,filter-defun-name (buffer)
+         ,@buffer-list-filter)
+       (defun ,defun-name ()
+         (interactive)
+         (let ((ajb-bs-configuration ,name))
+           (call-interactively 'ace-jump-buffer)))
+       (add-to-list 'bs-configurations
+                 '(,name nil nil nil ,filter-defun-name nil)))))
+
 (when (require 'perspective nil 'noerror)
-
-  (defun ajb-buffer-in-persp-curr (buffer)
+  (make-ace-jump-buffer-function
+      "persp"
     (with-current-buffer buffer
-      (not (member buffer (persp-buffers persp-curr)))))
-
-  (add-to-list 'bs-configurations
-               '("persp" nil nil nil ajb-buffer-in-persp-curr nil)))
+      (not (member buffer (persp-buffers persp-curr))))))
 
 (when (require 'projectile nil 'noerror)
-  (defun ajb-buffer-in-projectile-curr (buffer)
+  (make-ace-jump-buffer-function
+      "projectile"
     (let ((project-root (projectile-project-root)))
-        (with-current-buffer buffer
-          (not (projectile-project-buffer-p buffer project-root)))))
-  (add-to-list 'bs-configurations
-               '("projectile" nil nil nil ajb-buffer-in-projectile-curr nil)))
-
-(defun bs-sort-buffers-by-recentf (b1 b2)
-  "Function for sorting buffers by recentf order."
-  (let ((b1-index (-elem-index (buffer-file-name b1) recentf-list))
-        (b2-index (-elem-index (buffer-file-name b2) recentf-list)))
-    (when (< b1-index b2-index) t)))
+      (with-current-buffer buffer
+        (not (projectile-project-buffer-p buffer project-root))))))
 
 (defgroup ace-jump-buffer nil
   "fast buffer switching extension to `ace-jump-mode'"
@@ -125,6 +128,12 @@
   (interactive)
   (setq ajb--in-one-window t)
   (ace-jump-buffer))
+(defun bs-sort-buffers-by-recentf (b1 b2)
+  "Function for sorting buffers by recentf order."
+  (let ((b1-index (-elem-index (buffer-file-name b1) recentf-list))
+        (b2-index (-elem-index (buffer-file-name b2) recentf-list)))
+    (when (< b1-index b2-index) t)))
+
 
 (defun ace-jump-buffer-exit ()
   (interactive)
@@ -133,9 +142,7 @@
         (when ace-jump-current-mode (ace-jump-done))
         (bs-kill)
         (ace-jump-buffer-reset))
-    (let* ((ace-jump-mode nil)
-           (original-func (key-binding (kbd "C-g"))))
-      (call-interactively original-func))))
+    (ace-jump-done)))
 
 (provide 'ace-jump-buffer)
 ;;; ace-jump-buffer.el ends here
