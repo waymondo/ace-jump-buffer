@@ -4,7 +4,7 @@
 
 ### Installation
 
-Install from [MELPA](melpa.milkbox.net) with `package-install ace-jump-buffer`, or drop `ace-jump-buffer.el`, `ace-jump-mode.el`, and [`dash.el`](https://github.com/magnars/dash.el) into your load path. 
+Install from [MELPA](melpa.milkbox.net) with `package-install ace-jump-buffer`, or drop `ace-jump-buffer.el`, `ace-jump-mode.el`, and [`dash.el`](https://github.com/magnars/dash.el) into your load path.
 
 ### Usage
 
@@ -18,5 +18,18 @@ Variable                | Description
 ------------------------|------------
 `ajb-max-window-height` | The max window height for the buffer menu. The default is 27 (fits the lowercase alphabet).
 `ajb-sort-function`     | The function for sorting buffers in the menu. The default is `(bs-sort-buffers-by-recentf)`.
-`ajb-bs-configuration`  | The `bs` configuration to use when displaying the menu. The default is `"all"`. If you use [`perspective`](https://github.com/nex3/perspective-el), you can set this to `"persp"` to scope the buffer list to your current workspace/project.
+`ajb-bs-configuration`  | The `bs` configuration to use when displaying the menu with `ace-jump-buffer`. The default is `"all"`. If you use [`perspective`](https://github.com/nex3/perspective-el), you may set this to `"persp"` to scope the buffer list to your current workspace/project. If you use [`projectile`](https://github.com/bbatsov/projectile), you may set this to `"projectile"` to scope the buffer list to your current project.
 
+### Macro Command
+
+0.3 introduces a macro for easily making custom `ace-jump-buffer` filters and interactive functions. `(make-ace-jump-buffer-function)` takes two variables: a string name and the body of a buffer rejection filter function.
+
+For example, if you wanted an `ace-jump-buffer` function for pulling up your `*shell-mode*` buffers:
+
+``` elisp
+(make-ace-jump-buffer-function "shell"
+  (with-current-buffer buffer
+    (not (eq major-mode 'shell-mode))))
+```
+
+This would create a `bs-configurations` option named "shell" and a callable defun named `(ace-jump-shell-buffers)`.

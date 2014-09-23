@@ -19,13 +19,15 @@
 (require 'recentf)
 (require 'dash)
 
-(defmacro make-ace-jump-buffer-function (name &rest buffer-list-filter)
+(defmacro make-ace-jump-buffer-function (name &rest buffer-list-reject-filter)
+  "Create a `bs-configuration' and interactive defun using NAME that displays buffers
+that don't get rejected by the body of BUFFER-LIST-REJECT-FILTER."
   (declare (indent 1))
   (let ((filter-defun-name (intern (format "ajb/filter-%s-buffers" name)))
         (defun-name (intern (format "ace-jump-%s-buffers" name))))
     `(progn
        (defun ,filter-defun-name (buffer)
-         ,@buffer-list-filter)
+         ,@buffer-list-reject-filter)
        (defun ,defun-name ()
          (interactive)
          (let ((ajb-bs-configuration ,name))
@@ -34,14 +36,12 @@
                  '(,name nil nil nil ,filter-defun-name nil)))))
 
 (when (require 'perspective nil 'noerror)
-  (make-ace-jump-buffer-function
-      "persp"
+  (make-ace-jump-buffer-function "persp"
     (with-current-buffer buffer
       (not (member buffer (persp-buffers persp-curr))))))
 
 (when (require 'projectile nil 'noerror)
-  (make-ace-jump-buffer-function
-      "projectile"
+  (make-ace-jump-buffer-function "projectile"
     (let ((project-root (projectile-project-root)))
       (with-current-buffer buffer
         (not (projectile-project-buffer-p buffer project-root))))))
