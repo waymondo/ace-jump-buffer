@@ -1,18 +1,18 @@
 ;;; ace-jump-buffer.el --- fast buffer switching extension to `ace-jump-mode'
 ;;
-;; Copyright 2013 Justin Talbott
+;; Copyright 2013-2014 Justin Talbott
 ;;
 ;; Author: Justin Talbott <justin@waymondo.com>
 ;; URL: https://github.com/waymondo/ace-jump-buffer
-;; Version: 0.2.2
+;; Version: 0.3.0
 ;; Package-Requires: ((ace-jump-mode "1.0") (dash "2.4.0"))
 ;;
-;;
-;; Installation:
+;;; Commentary:
 ;;
 ;;   (require 'ace-jump-buffer)
 ;;   then bind `ace-jump-buffer' to something useful
 ;;
+;;; Code:
 
 (require 'bs)
 (require 'ace-jump-mode)
@@ -47,7 +47,7 @@ that don't get rejected by the body of BUFFER-LIST-REJECT-FILTER."
         (not (projectile-project-buffer-p buffer project-root))))))
 
 (defgroup ace-jump-buffer nil
-  "fast buffer switching extension to `ace-jump-mode'"
+  "Fast buffer switching extension to `ace-jump-mode'."
   :version "0.2.0"
   :link '(url-link "https://github.com/waymondo/ace-jump-buffer")
   :group 'convenience)
@@ -58,11 +58,11 @@ that don't get rejected by the body of BUFFER-LIST-REJECT-FILTER."
   :type 'integer)
 
 (defcustom ajb-sort-function 'bs-sort-buffers-by-recentf
-  "The `bs-sort-function' function used when displaying `ace-jump-buffer'"
+  "The `bs-sort-function' function used when displaying `ace-jump-buffer'."
   :group 'ace-jump-buffer)
 
 (defcustom ajb-bs-configuration "all"
-  "The `bs-configuration' used when displaying `ace-jump-buffer'"
+  "The `bs-configuration' used when displaying `ace-jump-buffer'."
   :group 'ace-jump-buffer)
 
 ;; interval settings
@@ -78,7 +78,7 @@ that don't get rejected by the body of BUFFER-LIST-REJECT-FILTER."
 
 
 (defadvice bs--show-header (around maybe-disable-bs-header activate)
-  "Don't show the `bs' header when doing `ace-jump-buffer'"
+  "Don't show the `bs' header when doing `ace-jump-buffer'."
   (unless ajb/showing ad-do-it))
 
 (defun ace-jump-buffer-hook ()
