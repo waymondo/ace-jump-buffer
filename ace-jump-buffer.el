@@ -70,6 +70,7 @@ that don't get rejected by the body of BUFFER-LIST-REJECT-FILTER."
 (defvar ajb/showing nil)
 (defvar ajb/other-window nil)
 (defvar ajb/in-one-window nil)
+(defvar ajb/configuration-history nil)
 
 ;; settings for a barebones `bs' switcher
 (defvar ajb/bs-attributes-list '(("" 2 2 left " ")
@@ -150,8 +151,8 @@ that don't get rejected by the body of BUFFER-LIST-REJECT-FILTER."
   (interactive)
   (let* ((name (completing-read "Ace jump buffer with configuration: "
                                 (--map (car it) bs-configurations) nil t nil
-                                'minibuffer-history
-                                (car minibuffer-history)))
+                                'ajb/configuration-history
+                                (car ajb/configuration-history)))
          (ajb-bs-configuration name))
     (ace-jump-buffer)))
 
