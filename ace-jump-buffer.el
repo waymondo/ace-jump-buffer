@@ -31,7 +31,7 @@ that don't get rejected by the body of BUFFER-LIST-REJECT-FILTER."
        (defun ,defun-name ()
          (interactive)
          (let ((ajb-bs-configuration ,name))
-           (call-interactively 'ace-jump-buffer)))
+           (ace-jump-buffer)))
        (add-to-list 'bs-configurations
                  '(,name nil nil nil ,filter-defun-name nil)))))
 
