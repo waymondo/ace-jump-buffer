@@ -19,6 +19,7 @@
 (require 'recentf)
 (require 'dash)
 
+;;;###autoload
 (defmacro make-ace-jump-buffer-function (name &rest buffer-list-reject-filter)
   "Create a `bs-configuration' and interactive defun using NAME that displays buffers
 that don't get rejected by the body of BUFFER-LIST-REJECT-FILTER."
