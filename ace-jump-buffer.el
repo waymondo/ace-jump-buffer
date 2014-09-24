@@ -57,7 +57,7 @@ that don't get rejected by the body of BUFFER-LIST-REJECT-FILTER."
   :group 'ace-jump-buffer
   :type 'integer)
 
-(defcustom ajb-sort-function 'bs-sort-buffers-by-recentf
+(defcustom ajb-sort-function 'bs--sort-by-recentf
   "The `bs-sort-function' function used when displaying `ace-jump-buffer'."
   :group 'ace-jump-buffer)
 
@@ -128,7 +128,7 @@ that don't get rejected by the body of BUFFER-LIST-REJECT-FILTER."
   (setq ajb/in-one-window t)
   (ace-jump-buffer))
 
-(defun bs-sort-buffers-by-recentf (b1 b2)
+(defun bs--sort-by-recentf (b1 b2)
   "Function for sorting buffers by recentf order."
   (let ((b1-index (-elem-index (buffer-file-name b1) recentf-list))
         (b2-index (-elem-index (buffer-file-name b2) recentf-list)))
