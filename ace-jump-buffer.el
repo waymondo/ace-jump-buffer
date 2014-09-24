@@ -19,34 +19,6 @@
 (require 'recentf)
 (require 'dash)
 
-;;;###autoload
-(defmacro make-ace-jump-buffer-function (name &rest buffer-list-reject-filter)
-  "Create a `bs-configuration' and interactive defun using NAME that displays buffers
-that don't get rejected by the body of BUFFER-LIST-REJECT-FILTER."
-  (declare (indent 1))
-  (let ((filter-defun-name (intern (format "ajb/filter-%s-buffers" name)))
-        (defun-name (intern (format "ace-jump-%s-buffers" name))))
-    `(progn
-       (defun ,filter-defun-name (buffer)
-         ,@buffer-list-reject-filter)
-       (defun ,defun-name ()
-         (interactive)
-         (let ((ajb-bs-configuration ,name))
-           (ace-jump-buffer)))
-       (add-to-list 'bs-configurations
-                    '(,name nil nil nil ,filter-defun-name nil)))))
-
-(when (require 'perspective nil 'noerror)
-  (make-ace-jump-buffer-function "persp"
-    (with-current-buffer buffer
-      (not (member buffer (persp-buffers persp-curr))))))
-
-(when (require 'projectile nil 'noerror)
-  (make-ace-jump-buffer-function "projectile"
-    (let ((project-root (projectile-project-root)))
-      (with-current-buffer buffer
-        (not (projectile-project-buffer-p buffer project-root))))))
-
 (defgroup ace-jump-buffer nil
   "Fast buffer switching extension to `ace-jump-mode'."
   :version "0.3.0"
@@ -155,6 +127,34 @@ that don't get rejected by the body of BUFFER-LIST-REJECT-FILTER."
                                 (car ajb/configuration-history)))
          (ajb-bs-configuration name))
     (ace-jump-buffer)))
+
+;;;###autoload
+(defmacro make-ace-jump-buffer-function (name &rest buffer-list-reject-filter)
+  "Create a `bs-configuration' and interactive defun using NAME that displays buffers
+that don't get rejected by the body of BUFFER-LIST-REJECT-FILTER."
+  (declare (indent 1))
+  (let ((filter-defun-name (intern (format "ajb/filter-%s-buffers" name)))
+        (defun-name (intern (format "ace-jump-%s-buffers" name))))
+    `(progn
+       (defun ,filter-defun-name (buffer)
+         ,@buffer-list-reject-filter)
+       (defun ,defun-name ()
+         (interactive)
+         (let ((ajb-bs-configuration ,name))
+           (ace-jump-buffer)))
+       (add-to-list 'bs-configurations
+                    '(,name nil nil nil ,filter-defun-name nil)))))
+
+(when (require 'perspective nil 'noerror)
+  (make-ace-jump-buffer-function "persp"
+    (with-current-buffer buffer
+      (not (member buffer (persp-buffers persp-curr))))))
+
+(when (require 'projectile nil 'noerror)
+  (make-ace-jump-buffer-function "projectile"
+    (let ((project-root (projectile-project-root)))
+      (with-current-buffer buffer
+        (not (projectile-project-buffer-p buffer project-root))))))
 
 (provide 'ace-jump-buffer)
 ;;; ace-jump-buffer.el ends here
