@@ -34,7 +34,7 @@ that don't get rejected by the body of BUFFER-LIST-REJECT-FILTER."
          (let ((ajb-bs-configuration ,name))
            (ace-jump-buffer)))
        (add-to-list 'bs-configurations
-                 '(,name nil nil nil ,filter-defun-name nil)))))
+                    '(,name nil nil nil ,filter-defun-name nil)))))
 
 (when (require 'perspective nil 'noerror)
   (make-ace-jump-buffer-function "persp"
@@ -149,7 +149,9 @@ that don't get rejected by the body of BUFFER-LIST-REJECT-FILTER."
   "Quickly hop to buffer with `ace-jump-mode' with selected configuration."
   (interactive)
   (let* ((name (completing-read "Ace jump buffer with configuration: "
-                                bs-configurations nil t))
+                                (--map (car it) bs-configurations) nil t nil
+                                'minibuffer-history
+                                (car minibuffer-history)))
          (ajb-bs-configuration name))
     (ace-jump-buffer)))
 
