@@ -113,14 +113,15 @@ that don't get rejected by the body of BUFFER-LIST-REJECT-FILTER."
         (bs-buffer-sort-function ajb-sort-function)
         (bs-attributes-list ajb/bs-attributes-list)
         (ajb/showing t))
-    (bs--show-with-configuration ajb-bs-configuration)
-    (set (make-local-variable 'bs-header-lines-length) 0)
-    (set (make-local-variable 'bs-max-window-height) ajb-max-window-height)
-    (push-mark)
-    (goto-char (point-min))
-    (bs--set-window-height)
-    (call-interactively 'ace-jump-line-mode)
-    (define-key overriding-local-map [t] 'ajb/exit)))
+    (save-excursion
+      (bs--show-with-configuration ajb-bs-configuration)
+      (set (make-local-variable 'bs-header-lines-length) 0)
+      (set (make-local-variable 'bs-max-window-height) ajb-max-window-height)
+      (goto-char (point-min))
+      (bs--set-window-height)
+      (call-interactively 'ace-jump-line-mode)
+      (when overriding-local-map
+        (define-key overriding-local-map [t] 'ajb/exit)))))
 
 ;;;###autoload
 (defun ace-jump-buffer-other-window ()
