@@ -48,7 +48,7 @@ that don't get rejected by the body of BUFFER-LIST-REJECT-FILTER."
 
 (defgroup ace-jump-buffer nil
   "Fast buffer switching extension to `ace-jump-mode'."
-  :version "0.2.0"
+  :version "0.3.0"
   :link '(url-link "https://github.com/waymondo/ace-jump-buffer")
   :group 'convenience)
 
@@ -76,25 +76,33 @@ that don't get rejected by the body of BUFFER-LIST-REJECT-FILTER."
                                  ("" 1 1 left " ")
                                  ("Buffer" bs--get-name-length 10 left bs--get-name)))
 
-
 (defadvice bs--show-header (around maybe-disable-bs-header activate)
   "Don't show the `bs' header when doing `ace-jump-buffer'."
   (unless ajb/showing ad-do-it))
 
-(defun ace-jump-buffer-hook ()
+(defun ajb/hook ()
   "On the end of ace jump, select the buffer at the current line."
   (when (string-match (buffer-name) "*buffer-selection*")
     (if ajb/other-window (bs-select-other-window)
       (if ajb/in-one-window (bs-select-in-one-window)
         (bs-select)))
-    (ace-jump-buffer-reset)))
+    (ajb/reset)))
 
-(add-hook 'ace-jump-mode-end-hook 'ace-jump-buffer-hook)
+(add-hook 'ace-jump-mode-end-hook 'ajb/hook)
 
-(defun ace-jump-buffer-reset ()
+(defun ajb/reset ()
   (setq ajb/other-window nil)
   (setq ajb/in-one-window nil)
   (kill-buffer "*buffer-selection*"))
+
+(defun ajb/exit ()
+  (interactive)
+  (if (string-match (buffer-name) "*buffer-selection*")
+      (progn
+        (when ace-jump-current-mode (ace-jump-done))
+        (bs-kill)
+        (ajb/reset))
+    (ace-jump-done)))
 
 ;;;###autoload
 (defun ace-jump-buffer ()
@@ -112,7 +120,7 @@ that don't get rejected by the body of BUFFER-LIST-REJECT-FILTER."
     (goto-char (point-min))
     (bs--set-window-height)
     (call-interactively 'ace-jump-line-mode)
-    (define-key overriding-local-map [t] 'ace-jump-buffer-exit)))
+    (define-key overriding-local-map [t] 'ajb/exit)))
 
 ;;;###autoload
 (defun ace-jump-buffer-other-window ()
@@ -133,15 +141,6 @@ that don't get rejected by the body of BUFFER-LIST-REJECT-FILTER."
   (let ((b1-index (-elem-index (buffer-file-name b1) recentf-list))
         (b2-index (-elem-index (buffer-file-name b2) recentf-list)))
     (when (< b1-index b2-index) t)))
-
-(defun ace-jump-buffer-exit ()
-  (interactive)
-  (if (string-match (buffer-name) "*buffer-selection*")
-      (progn
-        (when ace-jump-current-mode (ace-jump-done))
-        (bs-kill)
-        (ace-jump-buffer-reset))
-    (ace-jump-done)))
 
 (provide 'ace-jump-buffer)
 ;;; ace-jump-buffer.el ends here
