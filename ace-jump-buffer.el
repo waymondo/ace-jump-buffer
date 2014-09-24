@@ -136,6 +136,15 @@ that don't get rejected by the body of BUFFER-LIST-REJECT-FILTER."
   (setq ajb/in-one-window t)
   (ace-jump-buffer))
 
+;;;###autoload
+(defun ace-jump-buffer-with-configuration ()
+  "Quickly hop to buffer with `ace-jump-mode' with selected configuration."
+  (interactive)
+  (let* ((name (completing-read "Ace jump buffer with configuration: "
+                                bs-configurations nil t))
+         (ajb-bs-configuration name))
+    (ace-jump-buffer)))
+
 (defun bs--sort-by-recentf (b1 b2)
   "Function for sorting buffers by recentf order."
   (let ((b1-index (-elem-index (buffer-file-name b1) recentf-list))

@@ -8,11 +8,12 @@ Install from [MELPA](melpa.milkbox.net) with `package-install ace-jump-buffer`, 
 
 ### Usage
 
-Command                           | Description
-----------------------------------|------------
-`(ace-jump-buffer)`               | Open the buffer menu and go to the selected buffer in the current window.
-`(ace-jump-buffer-other-window)`  | Open the buffer menu and go to the selected buffer in other window.      
-`(ace-jump-buffer-in-one-window)` | Open the buffer menu and go to the selected buffer in full window.       
+Command                                | Description
+---------------------------------------|------------
+`(ace-jump-buffer)`                    | Open the buffer menu and go to the selected buffer in the current window.  
+`(ace-jump-buffer-other-window)`       | Open the buffer menu and go to the selected buffer in other window.  
+`(ace-jump-buffer-in-one-window)`      | Open the buffer menu and go to the selected buffer in full window.  
+`(ace-jump-buffer-with-configuration)` | Select a `bs-configuration`, then open the buffer menu and go to the selected buffer.  
 
 Variable                | Description
 ------------------------|------------
