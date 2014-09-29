@@ -23,7 +23,7 @@ Open the buffer menu and go to the selected buffer in full window.
 ###### `(ace-jump-same-mode-buffers)`
 Show a menu of buffers of the same mode as the current buffer.
 
-###### `(ace-jump-perspective-buffers)`
+###### `(ace-jump-persp-buffers)`
 Show a menu of buffers in the current perspective (`persp-mode` required.).
 
 ###### `(ace-jump-projectile-buffers)`
