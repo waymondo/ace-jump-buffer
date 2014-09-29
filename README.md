@@ -11,9 +11,9 @@ Install from [MELPA](melpa.milkbox.net) with `package-install ace-jump-buffer`, 
 Command                                | Description
 ---------------------------------------|------------
 `(ace-jump-buffer)`                    | Open the buffer menu and go to the selected buffer in the current window.  
+`(ace-jump-buffer-with-configuration)` | Select a `bs-configuration`, then show its buffer menu and go to the selected buffer.  
 `(ace-jump-buffer-other-window)`       | Open the buffer menu and go to the selected buffer in other window.  
 `(ace-jump-buffer-in-one-window)`      | Open the buffer menu and go to the selected buffer in full window.  
-`(ace-jump-buffer-with-configuration)` | Select a `bs-configuration`, then open the buffer menu and go to the selected buffer.  
 
 Variable                | Description
 ------------------------|------------
@@ -34,3 +34,9 @@ For example, if you wanted an `ace-jump-buffer` function for pulling up your `*s
 ```
 
 This would create a `bs-configurations` option named "shell" and a callable defun named `(ace-jump-shell-buffers)`.
+
+The following are provided:
+
+`(ace-jump-same-mode-buffers)`: Show a menu of buffers of the same mode as the current buffer.
+`(ace-jump-perspective-buffers)`: Show a menu of buffers in the current perspective (`persp-mode` required.).
+`(ace-jump-projectile-buffers)`: Show a menu of buffers in the current project (`projectile` required.).

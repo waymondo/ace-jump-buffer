@@ -4,7 +4,7 @@
 ;;
 ;; Author: Justin Talbott <justin@waymondo.com>
 ;; URL: https://github.com/waymondo/ace-jump-buffer
-;; Version: 0.3.0
+;; Version: 0.3.1
 ;; Package-Requires: ((ace-jump-mode "1.0") (dash "2.4.0"))
 ;;
 ;;; Commentary:
@@ -144,6 +144,11 @@ that don't get rejected by the body of BUFFER-LIST-REJECT-FILTER."
            (ace-jump-buffer)))
        (add-to-list 'bs-configurations
                     '(,name nil nil nil ,filter-defun-name nil)))))
+
+(make-ace-jump-buffer-function "same-mode"
+  (let ((current-mode major-mode))
+    (with-current-buffer buffer
+      (not (eq major-mode current-mode)))))
 
 (when (require 'perspective nil 'noerror)
   (make-ace-jump-buffer-function "persp"
