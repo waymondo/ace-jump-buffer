@@ -38,6 +38,10 @@
   "The `bs-configuration' used when displaying `ace-jump-buffer'."
   :group 'ace-jump-buffer)
 
+(defface ajb-face '((t :background unspecified :foreground unspecified))
+  "Customizable face to use within the `ace-jump-buffer' menu. The default is unspecified."
+  :group 'ace-jump-buffer)
+
 ;; interval settings
 (defvar ajb/showing nil)
 (defvar ajb/other-window nil)
@@ -97,6 +101,7 @@
       (bs--show-with-configuration ajb-bs-configuration)
       (set (make-local-variable 'bs-header-lines-length) 0)
       (set (make-local-variable 'bs-max-window-height) ajb-max-window-height)
+      (face-remap-add-relative 'default 'ajb-face)
       (goto-char (point-min))
       (bs--set-window-height)
       (call-interactively 'ace-jump-line-mode)
