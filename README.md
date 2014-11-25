@@ -1,3 +1,6 @@
+[![MELPA](http://melpa.org/packages/ace-jump-buffer-badge.svg)](http://melpa.org/#/ace-jump-buffer)
+[![MELPA Stable](http://stable.melpa.org/packages/ace-jump-buffer-badge.svg)](http://stable.melpa.org/#/ace-jump-buffer)
+
 ## Ace Jump Buffer
 
 `ace-jump-buffer` is an extension for [`ace-jump-mode`](https://github.com/winterTTr/ace-jump-mode) and the native `bs` buffer menu that lets you hop to Emacs buffers in two key strokes.
