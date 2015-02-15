@@ -1,10 +1,10 @@
 ;;; ace-jump-buffer.el --- fast buffer switching extension to `ace-jump-mode'
 ;;
-;; Copyright 2013-2014 Justin Talbott
+;; Copyright 2013-2015 Justin Talbott
 ;;
 ;; Author: Justin Talbott <justin@waymondo.com>
 ;; URL: https://github.com/waymondo/ace-jump-buffer
-;; Version: 0.3.1
+;; Version: 0.3.2
 ;; Package-Requires: ((ace-jump-mode "1.0") (dash "2.4.0"))
 ;;
 ;;; Commentary:
@@ -21,11 +21,11 @@
 
 (defgroup ace-jump-buffer nil
   "Fast buffer switching extension to `ace-jump-mode'."
-  :version "0.3.0"
+  :version "0.3.2"
   :link '(url-link "https://github.com/waymondo/ace-jump-buffer")
   :group 'convenience)
 
-(defcustom ajb-max-window-height 27
+(defcustom ajb-max-window-height 20
   "Maximal window height of Ace Jump Buffer Selection Menu."
   :group 'ace-jump-buffer
   :type 'integer)
@@ -38,6 +38,10 @@
   "The `bs-configuration' used when displaying `ace-jump-buffer'."
   :group 'ace-jump-buffer)
 
+(defcustom ajb-home-row-keys nil
+  "Set to non-nil to use the home-row keys for buffer selection."
+  :group 'ace-jump-buffer)
+
 (defface ajb-face '((t :background unspecified :foreground unspecified))
   "Customizable face to use within the `ace-jump-buffer' menu. The default is unspecified."
   :group 'ace-jump-buffer)
@@ -47,6 +51,7 @@
 (defvar ajb/other-window nil)
 (defvar ajb/in-one-window nil)
 (defvar ajb/configuration-history nil)
+(defvar ajb/original-move-keys nil)
 
 ;; settings for a barebones `bs' switcher
 (defvar ajb/bs-attributes-list '(("" 2 2 left " ")
@@ -77,6 +82,8 @@
 (defun ajb/reset ()
   (setq ajb/other-window nil)
   (setq ajb/in-one-window nil)
+  (when ajb-home-row-keys
+    (setq ace-jump-mode-move-keys ajb/original-move-keys))
   (kill-buffer "*buffer-selection*"))
 
 (defun ajb/exit ()
@@ -99,6 +106,10 @@
         (ajb/showing t))
     (save-excursion
       (bs--show-with-configuration ajb-bs-configuration)
+      (when ajb-home-row-keys
+        (setq ajb/original-move-keys ace-jump-mode-move-keys)
+        (setq ace-jump-mode-move-keys
+              '(?a ?s ?d ?f ?g ?h ?j ?k ?l ?\; ?A ?S ?D ?F ?G ?H ?J ?K ?L ?:)))
       (set (make-local-variable 'bs-header-lines-length) 0)
       (set (make-local-variable 'bs-max-window-height) ajb-max-window-height)
       (face-remap-add-relative 'default 'ajb-face)

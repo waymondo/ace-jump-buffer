@@ -35,7 +35,10 @@ Show a menu of buffers in the current project (`projectile` required.).
 ### Variables
 
 ###### `ajb-max-window-height`
-The max window height for the buffer menu. The default is 27 (fits the lowercase alphabet).
+The max window height for the buffer menu. The default is 20.
+
+###### `ajb-home-row-keys`
+Set to non-nil to use the home-row keys as the selection characters.
 
 ###### `ajb-sort-function`
 The function for sorting buffers in the menu. The default is `(bs--sort-by-recentf)`.
