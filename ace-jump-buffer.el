@@ -71,21 +71,26 @@
       (if ajb/in-one-window (bs-select-in-one-window)
         (bs-select)))))
 
-(defun ajb/exit (&optional _char)
+(defun ajb/kill-bs-menu ()
   "Exit and kill the `bs' window on an invalid character."
   (bs-kill)
   (when (get-buffer "*buffer-selection*")
     (kill-buffer "*buffer-selection*")))
 
+(defun ajb/exit (_char)
+  "Exit and kill the `bs' window on an invalid character, throw done message."
+  (ajb/kill-bs-menu)
+  (throw 'done nil))
+
 (defun ajb/goto-line-and-buffer ()
   "Goto visible line below the cursor and visit the associated buffer."
   (interactive)
-  (let* ((avy-all-windows nil)
-         (r (avy--line
-             nil (line-beginning-position 2)
-             (window-end (selected-window) t))))
+  (let ((avy-all-windows nil)
+        (r (avy--line
+            nil (line-beginning-position 2)
+            (window-end (selected-window) t))))
     (if (or (stringp r) (not r))
-        (ajb/exit)
+        (ajb/kill-bs-menu)
       (unless (eq r t)
         (avy-action-goto r)
         (ajb/select-buffer)))))
