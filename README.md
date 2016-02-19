@@ -3,11 +3,11 @@
 
 ## Ace Jump Buffer
 
-`ace-jump-buffer` is an extension for [`ace-jump-mode`](https://github.com/winterTTr/ace-jump-mode) and the native `bs` buffer menu that lets you hop to Emacs buffers in two key strokes.
+`ace-jump-buffer` is an extension for [`avy`](https://github.com/abo-abo/avy) and the native `bs` buffer menu that lets you hop to Emacs buffers in 2-3 key strokes.
 
 ### Installation
 
-Install from [MELPA](melpa.milkbox.net) with `package-install ace-jump-buffer`, or drop `ace-jump-buffer.el`, `ace-jump-mode.el`, and [`dash.el`](https://github.com/magnars/dash.el) into your load path.
+Install from [MELPA](melpa.milkbox.net) with `package-install ace-jump-buffer`, or drop `ace-jump-buffer.el`, `avy.el`, and [`dash.el`](https://github.com/magnars/dash.el) into your load path.
 
 ### Commands
 
@@ -37,9 +37,6 @@ Show a menu of buffers in the current project (`projectile` required.).
 ###### `ajb-max-window-height`
 The max window height for the buffer menu. The default is 20.
 
-###### `ajb-home-row-keys`
-Set to non-nil to use the home-row keys as the selection characters.
-
 ###### `ajb-sort-function`
 The function for sorting buffers in the menu. The default is `(bs--sort-by-recentf)`.
 
@@ -48,7 +45,7 @@ The `bs` configuration to use when displaying the menu with `ace-jump-buffer`. T
 
 ### Macro
 
-0.3 introduces a macro for easily making custom `ace-jump-buffer` filters and interactive functions. `(make-ace-jump-buffer-function)` takes two variables: a string name and the body of a buffer rejection filter function.
+`(make-ace-jump-buffer-function)` takes two variables: a string name and the body of a buffer rejection filter function.
 
 For example, if you wanted an `ace-jump-buffer` function for pulling up your `*shell-mode*` buffers:
 
@@ -60,3 +57,11 @@ For example, if you wanted an `ace-jump-buffer` function for pulling up your `*s
 
 This would create a `bs-configurations` option named "shell" and a callable defun named `(ace-jump-shell-buffers)`.
 
+### Changelog
+
+*0.4* - Changed the internal jumping library from `ace-jump-mode` to
+`avy`. `ajb-home-row-keys` was depreciated as the default `avy-keys`
+are set to the lower-cased home-row keys.
+
+*0.3* - Introduced a macro for easily making custom `ace-jump-buffer`
+filters and interactive functions
