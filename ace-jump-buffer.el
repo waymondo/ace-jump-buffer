@@ -87,7 +87,7 @@
   (interactive)
   (let ((avy-all-windows nil)
         (r (avy--line
-            nil (line-beginning-position 2)
+            nil (line-beginning-position 1)
             (window-end (selected-window) t))))
     (if (or (stringp r) (not r))
         (ajb/kill-bs-menu)
