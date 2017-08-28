@@ -31,9 +31,16 @@
   :group 'ace-jump-buffer
   :type 'integer)
 
-(defcustom ajb-sort-function 'bs--sort-by-recentf
+(defcustom ajb-sort-function nil
   "The `bs-sort-function' function used when displaying `ace-jump-buffer'."
-  :group 'ace-jump-buffer)
+  :group 'ace-jump-buffer
+  :type '(radio (const :tag "No custom sorting" nil)
+                (function-item bs--sort-by-recentf)
+                (function-item bs--sort-by-name)
+                (function-item bs--sort-by-size)
+                (function-item bs--sort-by-filename)
+                (function-item bs--sort-by-mode)
+                (function :tag "Other function")))
 
 (defcustom ajb-bs-configuration "all"
   "The `bs-configuration' used when displaying `ace-jump-buffer'."
@@ -55,9 +62,17 @@
                                  ("" 1 1 left " ")
                                  ("Buffer" bs--get-name-length 10 left bs--get-name)))
 
-(defadvice bs--show-header (around maybe-disable-bs-header activate)
+(defun ajb/bs--show-header--around (oldfun)
   "Don't show the `bs' header when doing `ace-jump-buffer'."
-  (unless ajb/showing ad-do-it))
+  (unless ajb/showing (funcall oldfun)))
+
+(advice-add 'bs--show-header :around 'ajb/bs--show-header--around)
+
+(defun ajb/bs-set-configuration--after (name)
+  "Set `bs-buffer-sort-function' to the value of `ajb-sort-function'."
+  (when ajb/showing (setq bs-buffer-sort-function ajb-sort-function)))
+
+(advice-add 'bs-set-configuration :after 'ajb/bs-set-configuration--after)
 
 (defun bs--sort-by-recentf (b1 b2)
   "Sort function for comparing buffers `B1' and `B2' by recentf order."
@@ -102,7 +117,6 @@
   (interactive)
   (let ((avy-background nil)
         (avy-all-windows nil)
-        (bs-buffer-sort-function ajb-sort-function)
         (bs-attributes-list ajb/bs-attributes-list)
         (avy-handler-function 'ajb/exit)
         (ajb/showing t))
