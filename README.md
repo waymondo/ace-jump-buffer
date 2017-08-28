@@ -38,7 +38,7 @@ Show a menu of buffers in the current project (`projectile` required.).
 The max window height for the buffer menu. The default is 20.
 
 ###### `ajb-sort-function`
-The function for sorting buffers in the menu. The default is `(bs--sort-by-recentf)`.
+The function for sorting buffers in the menu. The default is `nil`.
 
 ###### `ajb-bs-configuration`
 The `bs` configuration to use when displaying the menu with `ace-jump-buffer`. The default is `"all"`. If you use [`perspective`](https://github.com/nex3/perspective-el), you may set this to `"persp"` to scope the buffer list to your current workspace/project. If you use [`projectile`](https://github.com/bbatsov/projectile), you may set this to `"projectile"` to scope the buffer list to your current project.
