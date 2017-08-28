@@ -183,6 +183,11 @@ It will displays buffers that don't get rejected by the body of
     (with-current-buffer buffer
       (not (member buffer (persp-buffers persp-curr))))))
 
+(when (require 'persp-mode nil 'noerror)
+  (make-ace-jump-buffer-function "persp"
+    (with-current-buffer buffer
+      (not (memq buffer (persp-buffer-list))))))
+
 (when (require 'projectile nil 'noerror)
   (make-ace-jump-buffer-function "projectile"
     (let ((project-root (projectile-project-root)))
