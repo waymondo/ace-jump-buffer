@@ -11,37 +11,51 @@ Install from [MELPA](melpa.milkbox.net) with `package-install ace-jump-buffer`, 
 
 ### Commands
 
-###### `(ace-jump-buffer)`
+#### `(ace-jump-buffer)`
 Open the buffer menu and go to the selected buffer in the current window.
 
-###### `(ace-jump-buffer-with-configuration)`
+#### `(ace-jump-buffer-with-configuration)`
 Select a `bs-configuration`, then show its buffer menu and go to the selected buffer.  
 
-###### `(ace-jump-buffer-other-window)`
+#### `(ace-jump-buffer-other-window)`
 Open the buffer menu and go to the selected buffer in other window.  
 
-###### `(ace-jump-buffer-in-one-window)`
+#### `(ace-jump-buffer-in-one-window)`
 Open the buffer menu and go to the selected buffer in full window.  
 
-###### `(ace-jump-same-mode-buffers)`
+#### `(ace-jump-same-mode-buffers)`
 Show a menu of buffers of the same mode as the current buffer.
 
-###### `(ace-jump-persp-buffers)`
+#### `(ace-jump-persp-buffers)`
 Show a menu of buffers in the current perspective (`persp-mode` required.).
 
-###### `(ace-jump-projectile-buffers)`
+#### `(ace-jump-projectile-buffers)`
 Show a menu of buffers in the current project (`projectile` required.).
 
 ### Variables
 
-###### `ajb-max-window-height`
+#### `ajb-max-window-height`
 The max window height for the buffer menu. The default is 20.
 
-###### `ajb-sort-function`
-The function for sorting buffers in the menu. The default is `nil`.
+#### `ajb-sort-function`
+The function for sorting buffers in the menu. Options:
 
-###### `ajb-bs-configuration`
-The `bs` configuration to use when displaying the menu with `ace-jump-buffer`. The default is `"all"`. If you use [`perspective`](https://github.com/nex3/perspective-el), you may set this to `"persp"` to scope the buffer list to your current workspace/project. If you use [`projectile`](https://github.com/bbatsov/projectile), you may set this to `"projectile"` to scope the buffer list to your current project.
+* `nil`: Use the default `(buffer-list)` ordering [default]
+* `'bs--sort-by-recentf`
+* `'bs--sort-by-name`
+* `'bs--sort-by-size`
+* `'bs--sort-by-filename`
+* `'bs--sort-by-mode`
+
+#### `ajb-bs-configuration`
+The `bs` configuration to use when displaying the menu with
+`ace-jump-buffer`. Options:
+
+* `"all"`: Show all buffers [default]
+* `"persp"`: If you use
+  [`perspective`](https://github.com/nex3/perspective-el) or [`persp-mode`](https://github.com/Bad-ptr/persp-mode.el), you may set
+  this to scope the buffer list to your current perspective.
+* `"projectile"`: If you use [`projectile`](https://github.com/bbatsov/projectile), you may set this to scope the buffer list to your current project.
 
 ### Macro
 
