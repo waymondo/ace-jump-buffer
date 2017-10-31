@@ -55,7 +55,13 @@ The `bs` configuration to use when displaying the menu with
 * `"persp"`: If you use
   [`perspective`](https://github.com/nex3/perspective-el) or [`persp-mode`](https://github.com/Bad-ptr/persp-mode.el), you may set
   this to scope the buffer list to your current perspective.
-* `"projectile"`: If you use [`projectile`](https://github.com/bbatsov/projectile), you may set this to scope the buffer list to your current project.
+* `"projectile"`: If you use
+  [`projectile`](https://github.com/bbatsov/projectile), you may set
+  this to scope the buffer list to your current project.
+
+#### `ajb-style`
+The method of displaying the overlays for `ace-jump-buffer`. 
+Defaults to `'at-full` which is the default value of `avy`.
 
 ### Macro
 
