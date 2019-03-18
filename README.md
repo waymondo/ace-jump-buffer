@@ -3,7 +3,15 @@
 
 ## Ace Jump Buffer
 
-`ace-jump-buffer` is an extension for [`avy`](https://github.com/abo-abo/avy) and the native `bs` buffer menu that lets you hop to Emacs buffers in 2-3 key strokes.
+`ace-jump-buffer` is an extension for
+[`avy`](https://github.com/abo-abo/avy) and the native `bs` buffer
+menu that lets you hop to Emacs buffers in 2-3 key strokes.
+
+Alternately, you might be interested in this package’s spiritual
+successor -
+[`frog-jump-buffer`](https://github.com/waymondo/frog-jump-buffer) -
+which is a newer, similar package that is more performant and
+flexible.
 
 ### Installation
 
